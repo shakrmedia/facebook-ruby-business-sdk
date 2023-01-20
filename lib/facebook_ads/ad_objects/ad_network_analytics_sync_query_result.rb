@@ -71,7 +71,6 @@ module FacebookAds
       "FB_AD_NETWORK_REQUEST",
       "FB_AD_NETWORK_REVENUE",
       "FB_AD_NETWORK_SHOW_RATE",
-      "FB_AD_NETWORK_UA_SPEND",
       "FB_AD_NETWORK_VIDEO_GUARANTEE_REVENUE",
       "FB_AD_NETWORK_VIDEO_MRC",
       "FB_AD_NETWORK_VIDEO_MRC_RATE",
@@ -91,6 +90,7 @@ module FacebookAds
     ]
 
 
+    field :omitted_results, { list: 'object' }
     field :query_id, 'string'
     field :results, { list: 'object' }
     has_no_id

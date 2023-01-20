@@ -29,6 +29,7 @@ module FacebookAds
     CALL_TO_ACTION_TYPE = [
       "ADD_TO_CART",
       "APPLY_NOW",
+      "AUDIO_CALL",
       "BOOK_TRAVEL",
       "BUY",
       "BUY_NOW",
@@ -52,6 +53,7 @@ module FacebookAds
       "GET_OFFER_VIEW",
       "GET_QUOTE",
       "GET_SHOWTIMES",
+      "GET_STARTED",
       "INSTALL_APP",
       "INSTALL_MOBILE_APP",
       "LEARN_MORE",
@@ -62,12 +64,14 @@ module FacebookAds
       "MOBILE_DOWNLOAD",
       "MOMENTS",
       "NO_BUTTON",
+      "OPEN_INSTANT_APP",
       "OPEN_LINK",
       "ORDER_NOW",
       "PAY_TO_ACCESS",
       "PLAY_GAME",
       "PLAY_GAME_ON_FACEBOOK",
       "PURCHASE_GIFT_CARDS",
+      "RAISE_MONEY",
       "RECORD_NOW",
       "REFER_FRIENDS",
       "REQUEST_TIME",
@@ -76,6 +80,7 @@ module FacebookAds
       "SELL_NOW",
       "SEND_A_GIFT",
       "SEND_GIFT_MONEY",
+      "SEND_UPDATES",
       "SHARE",
       "SHOP_NOW",
       "SIGN_UP",
@@ -149,11 +154,6 @@ module FacebookAds
       "STORY_OWNER",
     ]
 
-    INSTANT_CHECKOUT_SETTING = [
-      "off",
-      "on",
-    ]
-
     OPERATOR = [
       "ALL",
       "ANY",
@@ -174,6 +174,7 @@ module FacebookAds
     field :categorization_criteria, 'string'
     field :category_media_source, 'string'
     field :collaborative_ads_lsb_image_bank_id, 'string'
+    field :degrees_of_freedom_spec, 'AdCreativeDegreesOfFreedomSpec'
     field :destination_set_id, 'string'
     field :dynamic_ad_voice, 'string'
     field :effective_authorization_category, 'string'
@@ -222,7 +223,6 @@ module FacebookAds
     field :video_id, 'string'
     field :call_to_action, 'object'
     field :image_file, 'string'
-    field :instant_checkout_setting, { enum: -> { INSTANT_CHECKOUT_SETTING }}
     field :is_dco_internal, 'bool'
 
     has_edge :adlabels do |edge|

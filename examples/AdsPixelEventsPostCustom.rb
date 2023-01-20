@@ -1,4 +1,5 @@
-# Copyright (c) 2017-present, Facebook, Inc. All rights reserved.
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+# All rights reserved.
 #
 # You are hereby granted a non-exclusive, worldwide, royalty-free license to use,
 # copy, modify, and distribute this software in source code or binary form for use
@@ -55,7 +56,6 @@ event = FacebookAds::ServerSide::Event.new(
     event_source_url: 'http://jaspers-market.com/product/123',
     action_source: 'website'
 )
-
 
 request = FacebookAds::ServerSide::EventRequest.new(
     pixel_id: pixel_id,

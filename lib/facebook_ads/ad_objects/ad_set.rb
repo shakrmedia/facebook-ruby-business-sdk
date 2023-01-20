@@ -76,6 +76,8 @@ module FacebookAds
       "LANDING_PAGE_VIEWS",
       "LEAD_GENERATION",
       "LINK_CLICKS",
+      "MESSAGING_APPOINTMENT_CONVERSION",
+      "MESSAGING_PURCHASE_CONVERSION",
       "NONE",
       "OFFSITE_CONVERSIONS",
       "PAGE_LIKES",
@@ -116,11 +118,6 @@ module FacebookAds
       "this_year",
       "today",
       "yesterday",
-    ]
-
-    OPERATOR = [
-      "ALL",
-      "ANY",
     ]
 
     DESTINATION_TYPE = [
@@ -170,6 +167,11 @@ module FacebookAds
       "ISSUES_ELECTIONS_POLITICS",
       "NONE",
       "ONLINE_GAMBLING_AND_GAMING",
+    ]
+
+    OPERATOR = [
+      "ALL",
+      "ANY",
     ]
 
     STATUS_OPTION = [
@@ -234,6 +236,17 @@ module FacebookAds
     field :time_based_ad_rotation_intervals, { list: 'int' }
     field :updated_time, 'datetime'
     field :use_new_app_click, 'bool'
+    field :campaign_spec, 'object'
+    field :daily_imps, 'int'
+    field :date_format, 'string'
+    field :execution_options, { list: { enum: -> { EXECUTION_OPTIONS }} }
+    field :line_number, 'int'
+    field :rb_prediction_id, 'string'
+    field :time_start, 'datetime'
+    field :time_stop, 'datetime'
+    field :topline_id, 'string'
+    field :tune_for_category, { enum: -> { TUNE_FOR_CATEGORY }}
+    field :upstream_events, 'hash'
 
     has_edge :activities do |edge|
       edge.get 'AdActivity' do |api|
@@ -284,16 +297,6 @@ module FacebookAds
     has_edge :asyncadrequests do |edge|
       edge.get 'AdAsyncRequest' do |api|
         api.has_param :statuses, { list: { enum: -> { AdAsyncRequest::STATUSES }} }
-      end
-    end
-
-    has_edge :content_delivery_report do |edge|
-      edge.get 'ContentDeliveryReport' do |api|
-        api.has_param :end_date, 'datetime'
-        api.has_param :platform, { enum: -> { ContentDeliveryReport::PLATFORM }}
-        api.has_param :position, { enum: -> { ContentDeliveryReport::POSITION }}
-        api.has_param :start_date, 'datetime'
-        api.has_param :summary, 'bool'
       end
     end
 

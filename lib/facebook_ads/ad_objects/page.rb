@@ -124,8 +124,10 @@ module FacebookAds
       "PROFILE_PLUS_FACEBOOK_ACCESS",
       "PROFILE_PLUS_FULL_CONTROL",
       "PROFILE_PLUS_MANAGE",
+      "PROFILE_PLUS_MANAGE_LEADS",
       "PROFILE_PLUS_MESSAGING",
       "PROFILE_PLUS_MODERATE",
+      "PROFILE_PLUS_MODERATE_DELEGATE_COMMUNITY",
       "PROFILE_PLUS_REVENUE",
       "READ_PAGE_MAILBOXES",
       "VIEW_MONETIZATION_INSIGHTS",
@@ -150,8 +152,10 @@ module FacebookAds
       "PROFILE_PLUS_FACEBOOK_ACCESS",
       "PROFILE_PLUS_FULL_CONTROL",
       "PROFILE_PLUS_MANAGE",
+      "PROFILE_PLUS_MANAGE_LEADS",
       "PROFILE_PLUS_MESSAGING",
       "PROFILE_PLUS_MODERATE",
+      "PROFILE_PLUS_MODERATE_DELEGATE_COMMUNITY",
       "PROFILE_PLUS_REVENUE",
       "READ_PAGE_MAILBOXES",
       "VIEW_MONETIZATION_INSIGHTS",
@@ -190,6 +194,60 @@ module FacebookAds
     MOBILE_CHAT_DISPLAY = [
       "APP_SWITCH",
       "CHAT_TAB",
+    ]
+
+    BACKDATED_TIME_GRANULARITY = [
+      "day",
+      "hour",
+      "min",
+      "month",
+      "none",
+      "year",
+    ]
+
+    CHECKIN_ENTRY_POINT = [
+      "BRANDING_CHECKIN",
+      "BRANDING_OTHER",
+      "BRANDING_PHOTO",
+      "BRANDING_STATUS",
+    ]
+
+    FORMATTING = [
+      "MARKDOWN",
+      "PLAINTEXT",
+    ]
+
+    PLACE_ATTACHMENT_SETTING = [
+      "1",
+      "2",
+    ]
+
+    POST_SURFACES_BLACKLIST = [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+    ]
+
+    POSTING_TO_REDSPACE = [
+      "disabled",
+      "enabled",
+    ]
+
+    TARGET_SURFACE = [
+      "STORY",
+      "TIMELINE",
+    ]
+
+    UNPUBLISHED_CONTENT_TYPE = [
+      "ADS_POST",
+      "DRAFT",
+      "INLINE_CREATED",
+      "PUBLISHED",
+      "REVIEWABLE_BRANDED_CONTENT",
+      "SCHEDULED",
+      "SCHEDULED_RECURRING",
     ]
 
     PUBLISH_STATUS = [
@@ -259,7 +317,6 @@ module FacebookAds
       "awards",
       "bio",
       "birthday",
-      "branded_camera",
       "category",
       "checkins",
       "company_overview",
@@ -277,6 +334,7 @@ module FacebookAds
       "hours",
       "inbox_labels",
       "invoice_access_invoice_change",
+      "invoice_access_invoice_draft_change",
       "invoice_access_onboarding_status_active",
       "leadgen",
       "leadgen_fat",
@@ -304,7 +362,6 @@ module FacebookAds
       "messaging_handovers",
       "messaging_optins",
       "messaging_optouts",
-      "messaging_page_feedback",
       "messaging_payments",
       "messaging_policy_enforcement",
       "messaging_postbacks",
@@ -432,6 +489,7 @@ module FacebookAds
     field :new_like_count, 'int'
     field :offer_eligible, 'bool'
     field :overall_star_rating, 'double'
+    field :owner_business, 'Business'
     field :page_token, 'string'
     field :parent_page, 'Page'
     field :parking, 'PageParking'
@@ -513,6 +571,10 @@ module FacebookAds
 
     has_edge :albums do |edge|
       edge.get 'Album'
+    end
+
+    has_edge :ar_experience do |edge|
+      edge.get
     end
 
     has_edge :assigned_users do |edge|
@@ -666,10 +728,6 @@ module FacebookAds
       end
     end
 
-    has_edge :copyright_whitelisted_partners do |edge|
-      edge.get 'Profile'
-    end
-
     has_edge :crosspost_whitelisted_pages do |edge|
       edge.get 'Page'
     end
@@ -712,6 +770,10 @@ module FacebookAds
       end
     end
 
+    has_edge :fantasy_games do |edge|
+      edge.get
+    end
+
     has_edge :feed do |edge|
       edge.get 'PagePost' do |api|
         api.has_param :include_hidden, 'bool'
@@ -719,7 +781,7 @@ module FacebookAds
         api.has_param :show_expired, 'bool'
         api.has_param :with, { enum: -> { PagePost::WITH }}
       end
-      edge.post do |api|
+      edge.post 'Page' do |api|
         api.has_param :actions, 'object'
         api.has_param :adaptive_type, 'string'
         api.has_param :album_id, 'string'
@@ -733,10 +795,10 @@ module FacebookAds
         api.has_param :attached_media, { list: 'object' }
         api.has_param :audience_exp, 'bool'
         api.has_param :backdated_time, 'datetime'
-        api.has_param :backdated_time_granularity, { enum: %w{day hour min month none year }}
+        api.has_param :backdated_time_granularity, { enum: -> { Page::BACKDATED_TIME_GRANULARITY }}
         api.has_param :call_to_action, 'object'
         api.has_param :caption, 'string'
-        api.has_param :checkin_entry_point, { enum: %w{BRANDING_CHECKIN BRANDING_OTHER BRANDING_PHOTO BRANDING_STATUS }}
+        api.has_param :checkin_entry_point, { enum: -> { Page::CHECKIN_ENTRY_POINT }}
         api.has_param :child_attachments, { list: 'object' }
         api.has_param :client_mutation_id, 'string'
         api.has_param :composer_entry_picker, 'string'
@@ -757,7 +819,7 @@ module FacebookAds
         api.has_param :expanded_height, 'int'
         api.has_param :expanded_width, 'int'
         api.has_param :feed_targeting, 'object'
-        api.has_param :formatting, { enum: %w{MARKDOWN PLAINTEXT }}
+        api.has_param :formatting, { enum: -> { Page::FORMATTING }}
         api.has_param :fun_fact_prompt_id, 'int'
         api.has_param :fun_fact_toastee_id, 'int'
         api.has_param :has_nickname, 'bool'
@@ -794,11 +856,11 @@ module FacebookAds
         api.has_param :page_recommendation, 'string'
         api.has_param :picture, 'string'
         api.has_param :place, 'object'
-        api.has_param :place_attachment_setting, { enum: %w{1 2 }}
+        api.has_param :place_attachment_setting, { enum: -> { Page::PLACE_ATTACHMENT_SETTING }}
         api.has_param :place_list, 'string'
         api.has_param :place_list_data, { list: 'string' }
-        api.has_param :post_surfaces_blacklist, { list: { enum: %w{1 2 3 4 5 }} }
-        api.has_param :posting_to_redspace, { enum: %w{disabled enabled }}
+        api.has_param :post_surfaces_blacklist, { list: { enum: -> { Page::POST_SURFACES_BLACKLIST }} }
+        api.has_param :posting_to_redspace, { enum: -> { Page::POSTING_TO_REDSPACE }}
         api.has_param :privacy, 'string'
         api.has_param :prompt_id, 'string'
         api.has_param :prompt_tracking_string, 'string'
@@ -817,7 +879,7 @@ module FacebookAds
         api.has_param :sponsor_relationship, 'int'
         api.has_param :suggested_place_id, 'object'
         api.has_param :tags, { list: 'int' }
-        api.has_param :target_surface, { enum: %w{STORY TIMELINE }}
+        api.has_param :target_surface, { enum: -> { Page::TARGET_SURFACE }}
         api.has_param :targeting, 'object'
         api.has_param :text_format_metadata, 'string'
         api.has_param :text_format_preset_id, 'string'
@@ -827,7 +889,7 @@ module FacebookAds
         api.has_param :time_since_original_post, 'int'
         api.has_param :title, 'string'
         api.has_param :tracking_info, 'string'
-        api.has_param :unpublished_content_type, { enum: %w{ADS_POST DRAFT INLINE_CREATED PUBLISHED REVIEWABLE_BRANDED_CONTENT SCHEDULED SCHEDULED_RECURRING }}
+        api.has_param :unpublished_content_type, { enum: -> { Page::UNPUBLISHED_CONTENT_TYPE }}
         api.has_param :user_selected_tags, 'bool'
         api.has_param :video_start_time_ms, 'int'
         api.has_param :viewer_coordinates, 'object'
@@ -867,6 +929,7 @@ module FacebookAds
 
     has_edge :insights do |edge|
       edge.get 'InsightsResult' do |api|
+        api.has_param :breakdown, { list: 'object' }
         api.has_param :date_preset, { enum: -> { InsightsResult::DATE_PRESET }}
         api.has_param :metric, { list: 'object' }
         api.has_param :period, { enum: -> { InsightsResult::PERIOD }}
@@ -918,6 +981,10 @@ module FacebookAds
       end
     end
 
+    has_edge :invoice_access_bank_account do |edge|
+      edge.get
+    end
+
     has_edge :leadgen_forms do |edge|
       edge.get 'LeadgenForm'
       edge.post 'LeadgenForm' do |api|
@@ -957,13 +1024,13 @@ module FacebookAds
         api.has_param :description, 'string'
         api.has_param :enable_backup_ingest, 'bool'
         api.has_param :encoding_settings, 'string'
+        api.has_param :event_params, 'object'
         api.has_param :fisheye_video_cropped, 'bool'
         api.has_param :front_z_rotation, 'double'
         api.has_param :game_show, 'hash'
         api.has_param :is_audio_only, 'bool'
         api.has_param :is_spherical, 'bool'
         api.has_param :original_fov, 'int'
-        api.has_param :planned_start_time, 'int'
         api.has_param :privacy, 'string'
         api.has_param :projection, { enum: -> { LiveVideo::PROJECTION }}
         api.has_param :published, 'bool'
@@ -1024,6 +1091,7 @@ module FacebookAds
     has_edge :message_attachments do |edge|
       edge.post do |api|
         api.has_param :message, 'object'
+        api.has_param :platform, { enum: %w{INSTAGRAM MESSENGER }}
       end
     end
 
@@ -1037,6 +1105,7 @@ module FacebookAds
         api.has_param :recipient, 'object'
         api.has_param :sender_action, { enum: -> { Page::SENDER_ACTION }}
         api.has_param :tag, 'object'
+        api.has_param :thread_control, 'object'
       end
     end
 
@@ -1065,33 +1134,6 @@ module FacebookAds
       end
     end
 
-    has_edge :nativeoffers do |edge|
-      edge.get 'NativeOffer'
-      edge.post 'NativeOffer' do |api|
-        api.has_param :barcode_photo, 'int'
-        api.has_param :barcode_type, { enum: -> { NativeOffer::BARCODE_TYPE }}
-        api.has_param :barcode_value, 'string'
-        api.has_param :block_reshares, 'bool'
-        api.has_param :commerce_product_item, 'string'
-        api.has_param :commerce_store, 'string'
-        api.has_param :commerce_store_collection, 'string'
-        api.has_param :details, 'string'
-        api.has_param :disable_location, 'bool'
-        api.has_param :discounts, { list: 'object' }
-        api.has_param :expiration_time, 'datetime'
-        api.has_param :instore_code, 'string'
-        api.has_param :location_type, { enum: -> { NativeOffer::LOCATION_TYPE }}
-        api.has_param :max_save_count, 'int'
-        api.has_param :online_code, 'string'
-        api.has_param :page_set_id, 'string'
-        api.has_param :redemption_code, 'string'
-        api.has_param :redemption_link, 'string'
-        api.has_param :terms, 'string'
-        api.has_param :unique_barcodes, 'int'
-        api.has_param :unique_codes, 'int'
-      end
-    end
-
     has_edge :nlp_configs do |edge|
       edge.post 'Page' do |api|
         api.has_param :api_version, 'object'
@@ -1102,6 +1144,10 @@ module FacebookAds
         api.has_param :other_language_support, 'hash'
         api.has_param :verbose, 'bool'
       end
+    end
+
+    has_edge :notification_message_tokens do |edge|
+      edge.get 'UserPageOneTimeOptInTokenSettings'
     end
 
     has_edge :notification_messages_dev_support do |edge|
@@ -1331,19 +1377,8 @@ module FacebookAds
     end
 
     has_edge :tabs do |edge|
-      edge.delete do |api|
-        api.has_param :tab, 'string'
-      end
       edge.get 'Tab' do |api|
         api.has_param :tab, { list: 'string' }
-      end
-      edge.post 'Page' do |api|
-        api.has_param :app_id, 'int'
-        api.has_param :custom_image_url, 'string'
-        api.has_param :custom_name, 'string'
-        api.has_param :is_non_connection_landing_tab, 'bool'
-        api.has_param :position, 'int'
-        api.has_param :tab, 'string'
       end
     end
 
@@ -1383,22 +1418,22 @@ module FacebookAds
         api.has_param :selected_rule_id, 'string'
         api.has_param :source, { enum: -> { VideoCopyrightRule::SOURCE }}
       end
-      edge.post do |api|
+      edge.post 'VideoCopyrightRule' do |api|
         api.has_param :condition_groups, { list: 'object' }
         api.has_param :name, 'string'
       end
     end
 
     has_edge :video_copyrights do |edge|
-      edge.post do |api|
+      edge.post 'VideoCopyright' do |api|
         api.has_param :attribution_id, 'string'
-        api.has_param :content_category, { enum: %w{episode movie web }}
+        api.has_param :content_category, { enum: -> { VideoCopyright::CONTENT_CATEGORY }}
         api.has_param :copyright_content_id, 'string'
         api.has_param :excluded_ownership_countries, { list: 'string' }
         api.has_param :excluded_ownership_segments, { list: 'object' }
         api.has_param :is_reference_disabled, 'bool'
         api.has_param :is_reference_video, 'bool'
-        api.has_param :monitoring_type, { enum: %w{AUDIO_ONLY VIDEO_AND_AUDIO VIDEO_ONLY }}
+        api.has_param :monitoring_type, { enum: -> { VideoCopyright::MONITORING_TYPE }}
         api.has_param :ownership_countries, { list: 'string' }
         api.has_param :rule_id, 'string'
         api.has_param :tags, { list: 'string' }
@@ -1409,6 +1444,20 @@ module FacebookAds
 
     has_edge :video_lists do |edge|
       edge.get 'VideoList'
+    end
+
+    has_edge :video_reels do |edge|
+      edge.get 'AdVideo'
+      edge.post 'AdVideo' do |api|
+        api.has_param :description, 'string'
+        api.has_param :feed_targeting, 'object'
+        api.has_param :scheduled_publish_time, 'datetime'
+        api.has_param :targeting, 'object'
+        api.has_param :title, 'string'
+        api.has_param :upload_phase, { enum: -> { AdVideo::UPLOAD_PHASE }}
+        api.has_param :video_id, 'object'
+        api.has_param :video_state, { enum: -> { AdVideo::VIDEO_STATE }}
+      end
     end
 
     has_edge :videos do |edge|
@@ -1516,6 +1565,9 @@ module FacebookAds
     has_edge :visitor_posts do |edge|
       edge.get 'PagePost' do |api|
         api.has_param :include_hidden, 'bool'
+        api.has_param :limit, 'int'
+        api.has_param :show_expired, 'bool'
+        api.has_param :with, { enum: -> { PagePost::WITH }}
       end
     end
 

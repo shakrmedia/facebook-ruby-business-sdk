@@ -25,29 +25,12 @@ module FacebookAds
   # on github and we'll fix in our codegen framework. We'll not be able to accept
   # pull request for this class.
 
-  class NativeOfferView < AdObject
+  class CommerceMerchantTosAcceptance < AdObject
 
+    field :business, 'Business'
     field :id, 'string'
-    field :offer, 'NativeOffer'
-    field :save_count, 'int'
+    has_no_post
     has_no_delete
-
-    has_edge :photos do |edge|
-      edge.post 'NativeOfferView' do |api|
-        api.has_param :ad_account, 'string'
-        api.has_param :ad_image_hashes, { list: 'string' }
-        api.has_param :file, 'file'
-        api.has_param :image_crops, { list: 'hash' }
-        api.has_param :photos, { list: 'string' }
-        api.has_param :urls, { list: 'string' }
-      end
-    end
-
-    has_edge :videos do |edge|
-      edge.post 'NativeOfferView' do |api|
-        api.has_param :videos, { list: 'string' }
-      end
-    end
 
   end
 end

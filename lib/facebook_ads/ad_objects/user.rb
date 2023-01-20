@@ -61,6 +61,7 @@ module FacebookAds
     field :gender, 'string'
     field :hometown, 'Page'
     field :id, 'string'
+    field :id_for_avatars, 'string'
     field :inspirational_people, { list: 'Experience' }
     field :install_type, 'string'
     field :installed, 'bool'
@@ -81,7 +82,7 @@ module FacebookAds
     field :profile_pic, 'string'
     field :quotes, 'string'
     field :relationship_status, 'string'
-    field :shared_login_upgrade_required_by, 'datetime'
+    field :shared_login_upgrade_required_by, 'object'
     field :short_name, 'string'
     field :significant_other, 'User'
     field :sports, { list: 'Experience' }
@@ -179,11 +180,17 @@ module FacebookAds
     end
 
     has_edge :assigned_pages do |edge|
-      edge.get 'Page'
+      edge.get 'Page' do |api|
+        api.has_param :pages, { list: 'int' }
+      end
     end
 
     has_edge :assigned_product_catalogs do |edge|
       edge.get 'ProductCatalog'
+    end
+
+    has_edge :avatars do |edge|
+      edge.get
     end
 
     has_edge :business_users do |edge|
@@ -359,6 +366,7 @@ module FacebookAds
     end
 
     has_edge :fundraisers do |edge|
+      edge.get 'FundraiserPersonToCharity'
       edge.post 'FundraiserPersonToCharity' do |api|
         api.has_param :charity_id, 'string'
         api.has_param :cover_photo, 'file'
@@ -378,8 +386,8 @@ module FacebookAds
     end
 
     has_edge :game_items do |edge|
-      edge.post do |api|
-        api.has_param :action, { enum: %w{CONSUME DROP MARK }}
+      edge.post 'GameItem' do |api|
+        api.has_param :action, { enum: -> { GameItem::ACTION }}
         api.has_param :app_id, 'string'
         api.has_param :drop_table_id, 'string'
         api.has_param :ext_id, 'string'
@@ -435,6 +443,7 @@ module FacebookAds
         api.has_param :description, 'string'
         api.has_param :enable_backup_ingest, 'bool'
         api.has_param :encoding_settings, 'string'
+        api.has_param :event_params, 'object'
         api.has_param :fisheye_video_cropped, 'bool'
         api.has_param :front_z_rotation, 'double'
         api.has_param :is_audio_only, 'bool'
@@ -453,6 +462,10 @@ module FacebookAds
       end
     end
 
+    has_edge :messenger_desktop_performance_traces do |edge|
+      edge.post 'User'
+    end
+
     has_edge :music do |edge|
       edge.get 'Page' do |api|
         api.has_param :target_id, 'string'
@@ -463,9 +476,13 @@ module FacebookAds
       edge.post 'User' do |api|
         api.has_param :filtering, { list: { enum: -> { User::FILTERING }} }
         api.has_param :href, 'object'
+        api.has_param :label, 'string'
+        api.has_param :message, 'hash'
         api.has_param :notif_ids, { list: 'string' }
+        api.has_param :payload, 'string'
         api.has_param :read, 'bool'
         api.has_param :ref, 'string'
+        api.has_param :schedule_interval, 'int'
         api.has_param :seen, 'bool'
         api.has_param :template, 'object'
         api.has_param :type, { enum: -> { User::TYPE }}
