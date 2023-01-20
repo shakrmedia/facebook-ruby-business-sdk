@@ -35,6 +35,11 @@ module FacebookAds
       "PARTIAL_FETCH",
     ]
 
+    VISIBILITY = [
+      "PUBLISHED",
+      "STAGING",
+    ]
+
 
     field :address, 'object'
     field :applinks, 'CatalogItemAppLinks'
@@ -46,6 +51,13 @@ module FacebookAds
     field :custom_label_4, 'string'
     field :custom_label_5, 'string'
     field :custom_label_6, 'string'
+    field :custom_number_0, 'int'
+    field :custom_number_1, 'int'
+    field :custom_number_2, 'int'
+    field :custom_number_3, 'int'
+    field :custom_number_4, 'int'
+    field :custom_number_5, 'int'
+    field :custom_number_6, 'int'
     field :id, 'string'
     field :image_fetch_status, { enum: -> { IMAGE_FETCH_STATUS }}
     field :images, { list: 'string' }
@@ -53,6 +65,7 @@ module FacebookAds
     field :sanitized_images, { list: 'string' }
     field :unit_price, 'object'
     field :url, 'string'
+    field :visibility, { enum: -> { VISIBILITY }}
     has_no_post
     has_no_delete
 

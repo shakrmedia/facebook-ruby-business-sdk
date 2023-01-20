@@ -55,6 +55,11 @@ module FacebookAds
       "PARTIAL_FETCH",
     ]
 
+    VISIBILITY = [
+      "PUBLISHED",
+      "STAGING",
+    ]
+
 
     field :address, 'object'
     field :applinks, 'CatalogItemAppLinks'
@@ -70,6 +75,11 @@ module FacebookAds
     field :custom_label_2, 'string'
     field :custom_label_3, 'string'
     field :custom_label_4, 'string'
+    field :custom_number_0, 'int'
+    field :custom_number_1, 'int'
+    field :custom_number_2, 'int'
+    field :custom_number_3, 'int'
+    field :custom_number_4, 'int'
     field :description, 'string'
     field :expiration_date, 'string'
     field :gtin, 'string'
@@ -87,6 +97,7 @@ module FacebookAds
     field :unit_price, 'object'
     field :url, 'string'
     field :vendor_id, 'string'
+    field :visibility, { enum: -> { VISIBILITY }}
     has_no_post
     has_no_delete
 

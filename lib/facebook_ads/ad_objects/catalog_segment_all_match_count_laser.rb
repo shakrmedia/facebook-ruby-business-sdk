@@ -16,16 +16,27 @@
 # IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'facebook_ads'
+# FB:AUTOGEN
 
-access_token = '<ACCESS_TOKEN>'
-app_secret = '<APP_SECRET>'
-app_id = '<APP_ID>'
-id = '<ACTIVITY_ID>'
+module FacebookAds
+  # This class is auto-generated.
 
-FacebookAds.configure do |config|
-  config.access_token = access_token
-  config.app_secret = app_secret
+  # For any issues or feature requests related to this class, please let us know
+  # on github and we'll fix in our codegen framework. We'll not be able to accept
+  # pull request for this class.
+
+  class CatalogSegmentAllMatchCountLaser < AdObject
+
+    field :date_start, 'string'
+    field :date_stop, 'string'
+    field :event, 'string'
+    field :source, 'ExternalEventSource'
+    field :total_matched_content_ids, 'int'
+    field :unique_matched_content_ids, 'int'
+    has_no_id
+    has_no_get
+    has_no_post
+    has_no_delete
+
+  end
 end
-
-ad_set = FacebookAds::AdSet.get(id ,'created_time')

@@ -25,11 +25,21 @@ module FacebookAds
   # on github and we'll fix in our codegen framework. We'll not be able to accept
   # pull request for this class.
 
-  class DynamicContentSet < AdObject
+  class ShadowIgMediaProductTags < AdObject
 
-    field :business_id, 'string'
-    field :id, 'string'
+    field :image_url, 'string'
+    field :is_checkout, 'bool'
+    field :merchant_id, 'int'
     field :name, 'string'
+    field :price_string, 'string'
+    field :product_id, 'int'
+    field :review_status, 'string'
+    field :stripped_price_string, 'string'
+    field :stripped_sale_price_string, 'string'
+    field :x, 'double'
+    field :y, 'double'
+    has_no_id
+    has_no_get
     has_no_post
     has_no_delete
 

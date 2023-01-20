@@ -35,6 +35,11 @@ module FacebookAds
       "TILDE",
     ]
 
+    INGESTION_SOURCE_TYPE = [
+      "primary_feed",
+      "supplementary_feed",
+    ]
+
     QUOTED_FIELDS_MODE = [
       "AUTODETECT",
       "OFF",
@@ -52,7 +57,6 @@ module FacebookAds
     ]
 
     FEED_TYPE = [
-      "AUTO",
       "AUTOMOTIVE_MODEL",
       "DESTINATION",
       "FLIGHT",
@@ -60,18 +64,12 @@ module FacebookAds
       "HOTEL",
       "HOTEL_ROOM",
       "LOCAL_INVENTORY",
-      "MARKET",
       "MEDIA_TITLE",
       "OFFER",
       "PRODUCTS",
       "TRANSACTABLE_ITEMS",
       "VEHICLES",
       "VEHICLE_OFFER",
-    ]
-
-    INGESTION_SOURCE_TYPE = [
-      "PRIMARY_FEED",
-      "SUPPLEMENTARY_FEED",
     ]
 
     ITEM_SUB_TYPE = [
@@ -104,6 +102,7 @@ module FacebookAds
     ]
 
     OVERRIDE_TYPE = [
+      "BATCH_API_LANGUAGE_OR_COUNTRY",
       "CATALOG_SEGMENT_CUSTOMIZE_DEFAULT",
       "COUNTRY",
       "LANGUAGE",
@@ -120,7 +119,7 @@ module FacebookAds
     field :encoding, 'string'
     field :file_name, 'string'
     field :id, 'string'
-    field :ingestion_source_type, 'string'
+    field :ingestion_source_type, { enum: -> { INGESTION_SOURCE_TYPE }}
     field :item_sub_type, 'string'
     field :latest_upload, 'ProductFeedUpload'
     field :migrated_from_feed_id, 'string'
@@ -173,19 +172,28 @@ module FacebookAds
       end
     end
 
+    has_edge :media_titles do |edge|
+      edge.get 'MediaTitle' do |api|
+        api.has_param :bulk_pagination, 'bool'
+        api.has_param :filter, 'object'
+      end
+    end
+
     has_edge :products do |edge|
       edge.get 'ProductItem' do |api|
         api.has_param :bulk_pagination, 'bool'
+        api.has_param :error_priority, { enum: -> { ProductItem::ERROR_PRIORITY }}
+        api.has_param :error_type, { enum: -> { ProductItem::ERROR_TYPE }}
         api.has_param :filter, 'object'
       end
     end
 
     has_edge :rules do |edge|
       edge.get 'ProductFeedRule'
-      edge.post do |api|
+      edge.post 'ProductFeedRule' do |api|
         api.has_param :attribute, 'string'
         api.has_param :params, 'hash'
-        api.has_param :rule_type, { enum: %w{fallback_rule letter_case_rule mapping_rule regex_replace_rule value_mapping_rule }}
+        api.has_param :rule_type, { enum: -> { ProductFeedRule::RULE_TYPE }}
       end
     end
 

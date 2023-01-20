@@ -27,31 +27,28 @@ module FacebookAds
 
   class Event < AdObject
     CATEGORY = [
-      "ART_EVENT",
-      "BOOK_EVENT",
-      "CLASS_EVENT",
-      "COMEDY_EVENT",
-      "CONFERENCE_EVENT",
-      "DANCE_EVENT",
-      "DINING_EVENT",
-      "FAMILY_EVENT",
-      "FESTIVAL_EVENT",
-      "FITNESS",
-      "FOOD_TASTING",
-      "FUNDRAISER",
-      "LECTURE",
-      "MEETUP",
-      "MOVIE_EVENT",
-      "MUSIC_EVENT",
-      "NEIGHBORHOOD",
-      "NIGHTLIFE",
-      "OTHER",
-      "RELIGIOUS_EVENT",
-      "SHOPPING",
-      "SPORTS_EVENT",
-      "THEATER_EVENT",
-      "VOLUNTEERING",
-      "WORKSHOP",
+      "CLASSIC_LITERATURE",
+      "COMEDY",
+      "CRAFTS",
+      "DANCE",
+      "DRINKS",
+      "FITNESS_AND_WORKOUTS",
+      "FOODS",
+      "GAMES",
+      "GARDENING",
+      "HEALTHY_LIVING_AND_SELF_CARE",
+      "HEALTH_AND_MEDICAL",
+      "HOME_AND_GARDEN",
+      "MUSIC_AND_AUDIO",
+      "PARTIES",
+      "PROFESSIONAL_NETWORKING",
+      "RELIGIONS",
+      "SHOPPING_EVENT",
+      "SOCIAL_ISSUES",
+      "SPORTS",
+      "THEATER",
+      "TV_AND_MOVIES",
+      "VISUAL_ARTS",
     ]
 
     ONLINE_EVENT_FORMAT = [
@@ -132,28 +129,26 @@ module FacebookAds
 
     has_edge :live_videos do |edge|
       edge.get 'NullNode'
-    end
-
-    has_edge :livevideos do |edge|
-      edge.post do |api|
+      edge.post 'LiveVideo' do |api|
         api.has_param :content_tags, { list: 'string' }
         api.has_param :description, 'string'
         api.has_param :enable_backup_ingest, 'bool'
         api.has_param :encoding_settings, 'string'
+        api.has_param :event_params, 'object'
         api.has_param :fisheye_video_cropped, 'bool'
         api.has_param :front_z_rotation, 'double'
         api.has_param :is_audio_only, 'bool'
         api.has_param :is_spherical, 'bool'
         api.has_param :original_fov, 'int'
         api.has_param :privacy, 'string'
-        api.has_param :projection, { enum: %w{CUBEMAP EQUIRECTANGULAR HALF_EQUIRECTANGULAR }}
+        api.has_param :projection, { enum: -> { LiveVideo::PROJECTION }}
         api.has_param :published, 'bool'
         api.has_param :schedule_custom_profile_image, 'file'
-        api.has_param :spatial_audio_format, { enum: %w{ambiX_4 }}
-        api.has_param :status, { enum: %w{LIVE_NOW SCHEDULED_CANCELED SCHEDULED_LIVE SCHEDULED_UNPUBLISHED UNPUBLISHED }}
-        api.has_param :stereoscopic_mode, { enum: %w{LEFT_RIGHT MONO TOP_BOTTOM }}
+        api.has_param :spatial_audio_format, { enum: -> { LiveVideo::SPATIAL_AUDIO_FORMAT }}
+        api.has_param :status, { enum: -> { LiveVideo::STATUS }}
+        api.has_param :stereoscopic_mode, { enum: -> { LiveVideo::STEREOSCOPIC_MODE }}
         api.has_param :stop_on_delete_stream, 'bool'
-        api.has_param :stream_type, { enum: %w{AMBIENT REGULAR }}
+        api.has_param :stream_type, { enum: -> { LiveVideo::STREAM_TYPE }}
         api.has_param :title, 'string'
       end
     end

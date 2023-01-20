@@ -76,8 +76,10 @@ module FacebookAds
       "PROFILE_PLUS_FACEBOOK_ACCESS",
       "PROFILE_PLUS_FULL_CONTROL",
       "PROFILE_PLUS_MANAGE",
+      "PROFILE_PLUS_MANAGE_LEADS",
       "PROFILE_PLUS_MESSAGING",
       "PROFILE_PLUS_MODERATE",
+      "PROFILE_PLUS_MODERATE_DELEGATE_COMMUNITY",
       "PROFILE_PLUS_REVENUE",
       "READ_PAGE_MAILBOXES",
       "VIEW_MONETIZATION_INSIGHTS",
@@ -109,8 +111,10 @@ module FacebookAds
       "PROFILE_PLUS_FACEBOOK_ACCESS",
       "PROFILE_PLUS_FULL_CONTROL",
       "PROFILE_PLUS_MANAGE",
+      "PROFILE_PLUS_MANAGE_LEADS",
       "PROFILE_PLUS_MESSAGING",
       "PROFILE_PLUS_MODERATE",
+      "PROFILE_PLUS_MODERATE_DELEGATE_COMMUNITY",
       "PROFILE_PLUS_REVENUE",
       "READ_PAGE_MAILBOXES",
       "VIEW_MONETIZATION_INSIGHTS",
@@ -120,7 +124,7 @@ module FacebookAds
     field :block_offline_analytics, 'bool'
     field :collaborative_ads_managed_partner_business_info, 'ManagedPartnerBusiness'
     field :collaborative_ads_managed_partner_eligibility, 'BusinessManagedPartnerEligibility'
-    field :cpas_business_setup_config, 'CpasBusinessSetupConfig'
+    field :collaborative_ads_partner_premium_options, 'BusinessPartnerPremiumOptions'
     field :created_by, 'object'
     field :created_time, 'datetime'
     field :extended_updated_time, 'datetime'
@@ -228,6 +232,16 @@ module FacebookAds
       end
     end
 
+    has_edge :ads_reporting_mmm_reports do |edge|
+      edge.get do |api|
+        api.has_param :filtering, { list: 'hash' }
+      end
+    end
+
+    has_edge :ads_reporting_mmm_schedulers do |edge|
+      edge.get
+    end
+
     has_edge :adspixels do |edge|
       edge.get 'AdsPixel' do |api|
         api.has_param :id_filter, 'string'
@@ -288,7 +302,9 @@ module FacebookAds
     end
 
     has_edge :client_ad_accounts do |edge|
-      edge.get 'AdAccount'
+      edge.get 'AdAccount' do |api|
+        api.has_param :search_query, 'string'
+      end
     end
 
     has_edge :client_apps do |edge|
@@ -353,18 +369,8 @@ module FacebookAds
       edge.get 'CommerceMerchantSettings'
     end
 
-    has_edge :content_delivery_report do |edge|
-      edge.get 'ContentDeliveryReport' do |api|
-        api.has_param :end_date, 'datetime'
-        api.has_param :page_id, 'int'
-        api.has_param :platform, { enum: -> { ContentDeliveryReport::PLATFORM }}
-        api.has_param :position, { enum: -> { ContentDeliveryReport::POSITION }}
-        api.has_param :start_date, 'datetime'
-        api.has_param :summary, 'bool'
-      end
-    end
-
     has_edge :cpas_business_setup_config do |edge|
+      edge.get 'CpasBusinessSetupConfig'
       edge.post 'CpasBusinessSetupConfig' do |api|
         api.has_param :accepted_collab_ads_tos, 'bool'
         api.has_param :ad_accounts, { list: 'string' }
@@ -377,12 +383,8 @@ module FacebookAds
       edge.get 'CpasMerchantConfig'
     end
 
-    has_edge :create_and_apply_publisher_block_list do |edge|
-      edge.post do |api|
-        api.has_param :is_auto_blocking_on, 'bool'
-        api.has_param :name, 'string'
-        api.has_param :publisher_urls, { list: 'string' }
-      end
+    has_edge :creditcards do |edge|
+      edge.get 'CreditCard'
     end
 
     has_edge :creative_folders do |edge|
@@ -480,6 +482,10 @@ module FacebookAds
     end
 
     has_edge :managed_partner_businesses do |edge|
+      edge.delete do |api|
+        api.has_param :child_business_external_id, 'string'
+        api.has_param :child_business_id, 'string'
+      end
       edge.post do |api|
         api.has_param :ad_account_currency, 'string'
         api.has_param :catalog_id, 'string'
@@ -503,14 +509,6 @@ module FacebookAds
       end
     end
 
-    has_edge :managed_partner_child_business_assets do |edge|
-      edge.post 'Business' do |api|
-        api.has_param :child_business_id, 'string'
-        api.has_param :credit_limit, 'int'
-        api.has_param :line_of_credit_id, 'string'
-      end
-    end
-
     has_edge :negative_keyword_lists do |edge|
       edge.get
     end
@@ -527,7 +525,9 @@ module FacebookAds
     end
 
     has_edge :owned_ad_accounts do |edge|
-      edge.get 'AdAccount'
+      edge.get 'AdAccount' do |api|
+        api.has_param :search_query, 'string'
+      end
       edge.post 'Business' do |api|
         api.has_param :adaccount_id, 'string'
       end
@@ -608,6 +608,17 @@ module FacebookAds
       end
     end
 
+    has_edge :partner_premium_options do |edge|
+      edge.post do |api|
+        api.has_param :catalog_segment_id, 'string'
+        api.has_param :enable_basket_insight, 'bool'
+        api.has_param :enable_extended_audience_retargeting, 'bool'
+        api.has_param :partner_business_id, 'string'
+        api.has_param :retailer_custom_audience_config, 'hash'
+        api.has_param :vendor_id, 'string'
+      end
+    end
+
     has_edge :pending_client_ad_accounts do |edge|
       edge.get 'BusinessAdAccountRequest'
     end
@@ -648,7 +659,7 @@ module FacebookAds
       end
     end
 
-    has_edge :pixeltos do |edge|
+    has_edge :pixel_tos do |edge|
       edge.post
     end
 
@@ -669,7 +680,7 @@ module FacebookAds
     end
 
     has_edge :third_party_measurement_report_dataset do |edge|
-      edge.get 'ThirdPartyMeasurementReportDataset'
+      edge.get
     end
 
   end

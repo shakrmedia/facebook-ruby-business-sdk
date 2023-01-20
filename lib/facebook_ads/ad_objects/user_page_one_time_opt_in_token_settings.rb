@@ -25,22 +25,18 @@ module FacebookAds
   # on github and we'll fix in our codegen framework. We'll not be able to accept
   # pull request for this class.
 
-  class CanvasTemplate < AdObject
+  class UserPageOneTimeOptInTokenSettings < AdObject
 
-    field :channels, 'map<string, map<string, string>>'
-    field :description, 'string'
-    field :document, 'Canvas'
+    field :creation_timestamp, 'int'
+    field :notification_messages_frequency, 'string'
+    field :notification_messages_reoptin, 'string'
+    field :notification_messages_timezone, 'string'
+    field :notification_messages_token, 'string'
+    field :recipient_id, 'string'
+    field :token_expiry_timestamp, 'int'
+    field :topic_title, 'string'
+    field :user_token_status, 'string'
     field :id, 'string'
-    field :is_multi_tab_supportable, 'bool'
-    field :is_new, 'bool'
-    field :name, 'string'
-    field :objectives, 'hash'
-    field :owner_id, 'User'
-    field :required_capabilities, { list: 'string' }
-    field :snapshot_photo, 'Photo'
-    field :status, 'string'
-    field :sub_verticals, { list: 'string' }
-    field :verticals, 'hash'
     has_no_post
     has_no_delete
 

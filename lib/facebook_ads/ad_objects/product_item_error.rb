@@ -25,13 +25,14 @@ module FacebookAds
   # on github and we'll fix in our codegen framework. We'll not be able to accept
   # pull request for this class.
 
-  class PageAdminNote < AdObject
+  class ProductItemError < AdObject
 
-    field :body, 'string'
-    field :from, 'Page'
-    field :id, 'string'
-    field :note_label, 'string'
-    field :user, 'User'
+    field :description, 'string'
+    field :error_priority, 'string'
+    field :error_type, 'string'
+    field :title, 'string'
+    has_no_id
+    has_no_get
     has_no_post
     has_no_delete
 

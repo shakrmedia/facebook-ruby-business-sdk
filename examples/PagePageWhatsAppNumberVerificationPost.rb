@@ -1,4 +1,5 @@
-# Copyright (c) 2017-present, Facebook, Inc. All rights reserved.
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+# All rights reserved.
 #
 # You are hereby granted a non-exclusive, worldwide, royalty-free license to use,
 # copy, modify, and distribute this software in source code or binary form for use
@@ -21,11 +22,15 @@ require 'facebook_ads'
 access_token = '<ACCESS_TOKEN>'
 app_secret = '<APP_SECRET>'
 app_id = '<APP_ID>'
-id = '<ACTIVITY_ID>'
+id = '<PAGE_ID>'
 
 FacebookAds.configure do |config|
   config.access_token = access_token
   config.app_secret = app_secret
 end
 
-campaign = FacebookAds::Campaign.get(id ,'time_created')
+page = FacebookAds::Page.get(id)
+page_whatsapp_number_verification = page.page_whatsapp_number_verification.create({
+    whatsapp_number: '123456789',
+    verification_code: '12345',
+})
