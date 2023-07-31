@@ -25,37 +25,33 @@ module FacebookAds
   # on github and we'll fix in our codegen framework. We'll not be able to accept
   # pull request for this class.
 
-  class InstantArticleInsightsQueryResult < AdObject
-    BREAKDOWN = [
-      "age",
-      "country",
-      "gender",
-      "gender_and_age",
-      "is_organic",
-      "is_shared_by_ia_owner",
-      "no_breakdown",
-      "platform",
-      "region",
-    ]
-
-    PERIOD = [
-      "day",
-      "days_28",
-      "lifetime",
-      "month",
-      "total_over_range",
-      "week",
+  class WhatsAppBusinessPreVerifiedPhoneNumber < AdObject
+    CODE_VERIFICATION_STATUS = [
+      "EXPIRED",
+      "NOT_VERIFIED",
+      "VERIFIED",
     ]
 
 
-    field :breakdowns, 'hash'
-    field :name, 'string'
-    field :time, 'datetime'
-    field :value, 'string'
-    has_no_id
-    has_no_get
+    field :code_verification_status, 'string'
+    field :code_verification_time, 'datetime'
+    field :id, 'string'
+    field :phone_number, 'string'
+    field :verification_expiry_time, 'datetime'
     has_no_post
-    has_no_delete
+
+    has_edge :request_code do |edge|
+      edge.post do |api|
+        api.has_param :code_method, { enum: %w{SMS VOICE }}
+        api.has_param :language, 'object'
+      end
+    end
+
+    has_edge :verify_code do |edge|
+      edge.post do |api|
+        api.has_param :code, 'string'
+      end
+    end
 
   end
 end

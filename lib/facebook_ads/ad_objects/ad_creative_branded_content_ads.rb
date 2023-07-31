@@ -25,11 +25,15 @@ module FacebookAds
   # on github and we'll fix in our codegen framework. We'll not be able to accept
   # pull request for this class.
 
-  class CanvasDynamicSetting < AdObject
+  class AdCreativeBrandedContentAds < AdObject
 
-    field :child_documents, { list: 'Canvas' }
-    field :product_set_id, 'string'
-    field :id, 'string'
+    field :ad_format, 'int'
+    field :creator_ad_permission_type, 'string'
+    field :instagram_boost_post_access_token, 'string'
+    field :partners, { list: 'object' }
+    field :ui_version, 'int'
+    has_no_id
+    has_no_get
     has_no_post
     has_no_delete
 

@@ -25,28 +25,31 @@ module FacebookAds
   # on github and we'll fix in our codegen framework. We'll not be able to accept
   # pull request for this class.
 
-  class InstantArticle < AdObject
+  class BrandRequest < AdObject
 
-    field :canonical_url, 'string'
-    field :development_mode, 'bool'
-    field :html_source, 'string'
+    field :ad_countries, { list: 'string' }
+    field :additional_contacts, { list: 'string' }
+    field :approval_level, 'int'
+    field :cells, { list: 'object' }
+    field :countries, { list: 'string' }
+    field :deny_reason, 'string'
+    field :end_time, 'datetime'
+    field :estimated_reach, 'int'
     field :id, 'string'
-    field :most_recent_import_status, 'object'
-    field :photos, { list: 'object' }
-    field :publish_status, 'string'
-    field :published, 'bool'
-    field :videos, { list: 'object' }
+    field :is_multicell, 'bool'
+    field :locale, 'string'
+    field :max_age, 'int'
+    field :min_age, 'int'
+    field :questions, { list: 'object' }
+    field :region, 'string'
+    field :request_status, 'string'
+    field :review_date, 'datetime'
+    field :start_time, 'datetime'
+    field :status, 'string'
+    field :submit_date, 'datetime'
+    field :total_budget, 'int'
     has_no_post
-
-    has_edge :insights do |edge|
-      edge.get 'InstantArticleInsightsQueryResult' do |api|
-        api.has_param :breakdown, { enum: -> { InstantArticleInsightsQueryResult::BREAKDOWN }}
-        api.has_param :metric, { list: 'object' }
-        api.has_param :period, { enum: -> { InstantArticleInsightsQueryResult::PERIOD }}
-        api.has_param :since, 'datetime'
-        api.has_param :until, 'datetime'
-      end
-    end
+    has_no_delete
 
   end
 end

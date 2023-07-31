@@ -85,6 +85,7 @@ module FacebookAds
       "QUALITY_CALL",
       "QUALITY_LEAD",
       "REACH",
+      "SUBSCRIBERS",
       "THRUPLAY",
       "VALUE",
       "VISIT_INSTAGRAM_PROFILE",
@@ -194,6 +195,7 @@ module FacebookAds
     field :billing_event, { enum: -> { BILLING_EVENT }}
     field :budget_remaining, 'string'
     field :campaign, 'Campaign'
+    field :campaign_attribution, 'string'
     field :campaign_id, 'string'
     field :configured_status, { enum: -> { CONFIGURED_STATUS }}
     field :created_time, 'datetime'
@@ -202,6 +204,8 @@ module FacebookAds
     field :daily_min_spend_target, 'string'
     field :daily_spend_cap, 'string'
     field :destination_type, 'string'
+    field :dsa_beneficiary, 'string'
+    field :dsa_payor, 'string'
     field :effective_status, { enum: -> { EFFECTIVE_STATUS }}
     field :end_time, 'datetime'
     field :existing_customer_budget_percentage, 'int'
@@ -231,7 +235,7 @@ module FacebookAds
     field :start_time, 'datetime'
     field :status, { enum: -> { STATUS }}
     field :targeting, 'Targeting'
-    field :targeting_optimization_types, 'hash'
+    field :targeting_optimization_types, { list: 'hash' }
     field :time_based_ad_rotation_id_blocks, { list: { list: 'int' } }
     field :time_based_ad_rotation_intervals, { list: 'int' }
     field :updated_time, 'datetime'
@@ -246,7 +250,6 @@ module FacebookAds
     field :time_stop, 'datetime'
     field :topline_id, 'string'
     field :tune_for_category, { enum: -> { TUNE_FOR_CATEGORY }}
-    field :upstream_events, 'hash'
 
     has_edge :activities do |edge|
       edge.get 'AdActivity' do |api|
