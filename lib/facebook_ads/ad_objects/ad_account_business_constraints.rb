@@ -25,17 +25,9 @@ module FacebookAds
   # on github and we'll fix in our codegen framework. We'll not be able to accept
   # pull request for this class.
 
-<<<<<<<< HEAD:lib/facebook_ads/ad_objects/ad_account_custom_audience.rb
-  class AdAccountCustomAudience < AdObject
-
-    field :audience_type_param_name, 'string'
-    field :existing_customer_tag, 'string'
-    field :new_customer_tag, 'string'
-========
   class AdAccountBusinessConstraints < AdObject
 
     field :audience_controls, 'object'
->>>>>>>> upstream/main:lib/facebook_ads/ad_objects/ad_account_business_constraints.rb
     has_no_id
     has_no_get
     has_no_post

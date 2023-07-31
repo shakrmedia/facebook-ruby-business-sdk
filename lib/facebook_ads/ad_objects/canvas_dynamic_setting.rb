@@ -25,19 +25,11 @@ module FacebookAds
   # on github and we'll fix in our codegen framework. We'll not be able to accept
   # pull request for this class.
 
-<<<<<<<< HEAD:lib/facebook_ads/ad_objects/canvas_dynamic_setting.rb
-  class CanvasDynamicSetting < AdObject
-
-    field :child_documents, { list: 'Canvas' }
-    field :product_set_id, 'string'
-    field :id, 'string'
-========
   class IgbcAdsPermission < AdObject
 
     field :id, 'string'
     field :permission_type, 'string'
     field :status, 'string'
->>>>>>>> upstream/main:lib/facebook_ads/ad_objects/igbc_ads_permission.rb
     has_no_post
     has_no_delete
 

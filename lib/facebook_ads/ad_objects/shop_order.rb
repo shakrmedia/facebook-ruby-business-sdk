@@ -25,11 +25,7 @@ module FacebookAds
   # on github and we'll fix in our codegen framework. We'll not be able to accept
   # pull request for this class.
 
-<<<<<<<< HEAD:lib/facebook_ads/ad_objects/shop_order.rb
-  class ShopOrder < AdObject
-========
   class CanvasDynamicSetting < AdObject
->>>>>>>> upstream/main:lib/facebook_ads/ad_objects/canvas_dynamic_setting.rb
 
     field :child_documents, { list: 'Canvas' }
     field :product_set_id, 'string'
