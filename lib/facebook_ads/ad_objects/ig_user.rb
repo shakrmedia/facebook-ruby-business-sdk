@@ -88,6 +88,7 @@ module FacebookAds
         api.has_param :until, 'datetime'
       end
       edge.post 'IgMedia' do |api|
+        api.has_param :audio_name, 'string'
         api.has_param :caption, 'string'
         api.has_param :children, { list: 'string' }
         api.has_param :cover_url, 'string'
@@ -115,6 +116,10 @@ module FacebookAds
         api.has_param :media_id, 'string'
         api.has_param :message, 'string'
       end
+    end
+
+    has_edge :notification_message_tokens do |edge|
+      edge.get 'UserPageOneTimeOptInTokenSettings'
     end
 
     has_edge :product_appeal do |edge|

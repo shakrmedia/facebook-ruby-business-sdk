@@ -25,6 +25,7 @@ module FacebookAds
   # on github and we'll fix in our codegen framework. We'll not be able to accept
   # pull request for this class.
 
+<<<<<<<< HEAD:lib/facebook_ads/ad_objects/igbc_ads_permission.rb
   class IgbcAdsPermission < AdObject
 
     field :id, 'string'
@@ -32,6 +33,17 @@ module FacebookAds
     field :status, 'string'
     has_no_post
     has_no_delete
+========
+  class OpenBridgeConfiguration < AdObject
+
+    field :access_key, 'string'
+    field :active, 'bool'
+    field :endpoint, 'string'
+    field :host_business_id, 'string'
+    field :host_external_id, 'string'
+    field :id, 'string'
+    field :pixel_id, 'string'
+>>>>>>>> upstream/main:lib/facebook_ads/ad_objects/open_bridge_configuration.rb
 
   end
 end

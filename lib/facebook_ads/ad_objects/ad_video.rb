@@ -32,6 +32,7 @@ module FacebookAds
       "ADS_AI_GENERATED",
       "AD_BREAK_PREVIEW",
       "AD_DERIVATIVE",
+      "AD_LIBRARY_WATERMARK",
       "AGE_UP",
       "ALBUM_MULTIMEDIA_POST",
       "ALOHA_CALL_VIDEO",
@@ -69,6 +70,7 @@ module FacebookAds
       "EVENT_COVER_VIDEO",
       "EVENT_TOUR",
       "FACECAST_DVR",
+      "FB_AVATAR_ANIMATED_SATP",
       "FB_COLLECTIBLE_VIDEO",
       "FB_SHORTS",
       "FB_SHORTS_CONTENT_REMIXABLE",
@@ -113,6 +115,7 @@ module FacebookAds
       "LEGACY_CONTAINED_POST_BROADCAST",
       "LIVE_AUDIO_ROOM_BROADCAST",
       "LIVE_CLIP_PREVIEW",
+      "LIVE_CLIP_WORKCHAT",
       "LIVE_CREATIVE_KIT_VIDEO",
       "LIVE_PHOTO",
       "LOOK_NOW_DEPRECATED",
@@ -391,6 +394,13 @@ module FacebookAds
         api.has_param :captions_file, 'file'
         api.has_param :default_locale, 'string'
         api.has_param :locales_to_delete, { list: 'string' }
+      end
+    end
+
+    has_edge :collaborators do |edge|
+      edge.get
+      edge.post 'AdVideo' do |api|
+        api.has_param :target_id, 'string'
       end
     end
 

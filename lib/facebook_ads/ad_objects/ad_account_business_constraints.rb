@@ -25,28 +25,21 @@ module FacebookAds
   # on github and we'll fix in our codegen framework. We'll not be able to accept
   # pull request for this class.
 
-  class InstantArticle < AdObject
+<<<<<<<< HEAD:lib/facebook_ads/ad_objects/ad_account_custom_audience.rb
+  class AdAccountCustomAudience < AdObject
 
-    field :canonical_url, 'string'
-    field :development_mode, 'bool'
-    field :html_source, 'string'
-    field :id, 'string'
-    field :most_recent_import_status, 'object'
-    field :photos, { list: 'object' }
-    field :publish_status, 'string'
-    field :published, 'bool'
-    field :videos, { list: 'object' }
+    field :audience_type_param_name, 'string'
+    field :existing_customer_tag, 'string'
+    field :new_customer_tag, 'string'
+========
+  class AdAccountBusinessConstraints < AdObject
+
+    field :audience_controls, 'object'
+>>>>>>>> upstream/main:lib/facebook_ads/ad_objects/ad_account_business_constraints.rb
+    has_no_id
+    has_no_get
     has_no_post
-
-    has_edge :insights do |edge|
-      edge.get 'InstantArticleInsightsQueryResult' do |api|
-        api.has_param :breakdown, { enum: -> { InstantArticleInsightsQueryResult::BREAKDOWN }}
-        api.has_param :metric, { list: 'object' }
-        api.has_param :period, { enum: -> { InstantArticleInsightsQueryResult::PERIOD }}
-        api.has_param :since, 'datetime'
-        api.has_param :until, 'datetime'
-      end
-    end
+    has_no_delete
 
   end
 end

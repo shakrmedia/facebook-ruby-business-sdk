@@ -25,9 +25,15 @@ module FacebookAds
   # on github and we'll fix in our codegen framework. We'll not be able to accept
   # pull request for this class.
 
+<<<<<<<< HEAD:lib/facebook_ads/ad_objects/commerce_merchant_tos_acceptance.rb
   class CommerceMerchantTosAcceptance < AdObject
 
     field :business, 'Business'
+========
+  class ShopOrder < AdObject
+
+    field :creation_time, 'datetime'
+>>>>>>>> upstream/main:lib/facebook_ads/ad_objects/shop_order.rb
     field :id, 'string'
     has_no_post
     has_no_delete

@@ -25,37 +25,25 @@ module FacebookAds
   # on github and we'll fix in our codegen framework. We'll not be able to accept
   # pull request for this class.
 
-  class InstantArticleInsightsQueryResult < AdObject
-    BREAKDOWN = [
-      "age",
-      "country",
-      "gender",
-      "gender_and_age",
-      "is_organic",
-      "is_shared_by_ia_owner",
-      "no_breakdown",
-      "platform",
-      "region",
-    ]
+<<<<<<<< HEAD:lib/facebook_ads/ad_objects/igbc_ads_permission.rb
+  class IgbcAdsPermission < AdObject
 
-    PERIOD = [
-      "day",
-      "days_28",
-      "lifetime",
-      "month",
-      "total_over_range",
-      "week",
-    ]
-
-
-    field :breakdowns, 'hash'
-    field :name, 'string'
-    field :time, 'datetime'
-    field :value, 'string'
-    has_no_id
-    has_no_get
+    field :id, 'string'
+    field :permission_type, 'string'
+    field :status, 'string'
     has_no_post
     has_no_delete
+========
+  class OpenBridgeConfiguration < AdObject
+
+    field :access_key, 'string'
+    field :active, 'bool'
+    field :endpoint, 'string'
+    field :host_business_id, 'string'
+    field :host_external_id, 'string'
+    field :id, 'string'
+    field :pixel_id, 'string'
+>>>>>>>> upstream/main:lib/facebook_ads/ad_objects/open_bridge_configuration.rb
 
   end
 end
