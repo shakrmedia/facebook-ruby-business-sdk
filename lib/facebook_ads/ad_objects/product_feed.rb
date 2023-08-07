@@ -203,12 +203,6 @@ module FacebookAds
       end
     end
 
-    has_edge :supplementary_feed_assocs do |edge|
-      edge.post do |api|
-        api.has_param :assoc_data, { list: 'hash' }
-      end
-    end
-
     has_edge :upload_schedules do |edge|
       edge.get 'ProductFeedSchedule'
       edge.post 'ProductFeed' do |api|
